@@ -6,12 +6,12 @@ function App() {
   return (
     <>
       <div className='bg-main h-[100vh] w-[100vw] flex'>
-        
-        <div className='sidebar bg-sidebar w-[20%]'> 
-          <Sidebar /> 
+        <div className='w-[23%] flex justify-center content-center flex-wrap'>
+          <div className='h-[94%] w-[86%]'>
+          <Sidebar />
+          </div>
         </div>
-
-        <div className='info w-[80%] bg-main'>
+        <div className='info w-[100%] bg-main'>
           <Info />
         </div>
       </div>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import DetailedNode from './DetailedNode';
 
-const YourComponent = () => {
+const DisplayNodes = () => {
   const [data, setData] = useState({ tank: {}, borewell: {}, water: {} });
-  const [loading, setLoading] = useState(true); // Add a loading state
+  const [loading, setLoading] = useState(true);
+  const [selectedNode, setSelectedNode] = useState(null); // To handle selected node
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,51 +24,60 @@ const YourComponent = () => {
         };
 
         setData(newData);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
         console.log('Fetched data:', newData);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false); // Set loading to false even if there is an error
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  const renderData = (dataObject) => {
+  const renderCards = (dataObject, type) => {
     if (typeof dataObject !== 'object' || Array.isArray(dataObject)) return null;
 
     return Object.entries(dataObject).map(([itemName, itemAttributes], index) => (
-      <div key={index}>
-        <h3 className='text-xl text-red-600'>{itemName}</h3>
-        <ul>
-          {itemAttributes &&
-            Object.entries(itemAttributes).map(([key, value]) => (
-              <li key={key}>
-                {key}: {value}
-              </li>
-            ))}
-        </ul>
+      <div key={index} className="card text-black">
+        <button onClick={() => setSelectedNode({ itemName, itemAttributes, type })}>
+          <h3 className="text-xl text-center">{itemName}</h3>
+          {/* <p>Type of Node: {type}</p> */}
+          <ul>
+            {itemAttributes &&
+              Object.entries(itemAttributes).map(([key, value]) => (
+                key !== 'created_at' && key !== 'nodeID' && (
+                  <li key={key}>
+                    {key}: {value}
+                  </li>
+                )
+              ))}
+          </ul>
+        </button>
       </div>
     ));
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Render loading message while data is being fetched
+    return <div>Loading...</div>;
+  }
+
+  if (selectedNode) {
+    return <DetailedNode node={selectedNode} goBack={() => setSelectedNode(null)} />;
   }
 
   return (
-    <div className='text-yellow-700 m-3'>
-      <h1 className='text-blue-700 text-2xl'> Tank Data</h1>
-      {renderData(data.tank)}
+    <div className="grid grid-cols-3 gap-4 px-4">
+      <h1 className="text-blue-700 text-2xl col-span-3 mt-1">Tank Data</h1>
+      {renderCards(data.tank, 'Water Tank')}
 
-      <h1 className='text-blue-700 text-2xl'>Borewell Data</h1>
-      {renderData(data.borewell)}
+      <h1 className="text-blue-700 text-2xl col-span-3 mt-1">Borewell Data</h1>
+      {renderCards(data.borewell, 'Borewell')}
 
-      <h1 className='text-blue-700 text-2xl'>Water Data</h1>
-      {renderData(data.water)}
+      <h1 className="text-blue-700 text-2xl col-span-3 mt-1">Water Data</h1>
+      {renderCards(data.water, 'Water Meter')}
     </div>
   );
 };
 
-export default YourComponent;
+export default DisplayNodes;
