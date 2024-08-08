@@ -1,10 +1,22 @@
 // DetailedNode.jsx
 import React from "react";
 
-const DetailedNode = ({ node, goBack }) => {
+const DetailedNode = ({ node, goBack, data }) => {
   const { itemName, itemAttributes, type } = node;
   const createdAt = itemAttributes.created_at;
   const nodeID = itemAttributes.nodeID;
+  const currentHour = new Date().getHours();
+
+  const Tile = ({ active, neutral }) => {
+    const tileStyle = {
+        width: '20px',
+        height: '20px',
+        margin: '2px',
+        backgroundColor: neutral ? 'gray' : active ? 'green' : 'red',
+    };
+
+    return <div style={tileStyle}></div>;
+  };
 
   return (
     <div className="detailed-node-container">
@@ -43,11 +55,11 @@ const DetailedNode = ({ node, goBack }) => {
       </div>
       <div className="performance-container">
         <div className="flex justify-center">
-          <img
-            className=""
-            src="/Images/performance_scale1.jpg"
-            alt="Detailed chart"
-          />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '4px' }}>
+            {data[type][itemName].map((active, index) => (
+                <Tile key={index} active={active} neutral={index > currentHour} />
+            ))}
+          </div>
         </div>
         <h2>Performance</h2>
       </div>
