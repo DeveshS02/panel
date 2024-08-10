@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <div className='bg-main h-[100vh] w-[100vw] flex'>
-        <div className='w-[23%] flex justify-center content-center flex-wrap'>
+        <div className='w-[23%] flex sidebarr justify-center content-center flex-wrap'>
           <div className='h-[94%] w-[86%]'>
           <Sidebar />
           </div>
