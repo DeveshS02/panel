@@ -75,6 +75,7 @@ const DetailedNode = ({ node, goBack, data }) => {
       height: "20px",
       margin: "2px",
       backgroundColor: neutral ? "gray" : active ? "green" : "red",
+
     };
 
     return <div style={tileStyle}></div>;
