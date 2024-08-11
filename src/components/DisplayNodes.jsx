@@ -226,7 +226,7 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-4 px-4">
+    <div className="grid px-4">
       {(selectedType === "All" || selectedType === "Water Tank") && (
         <>
           <h1 className="typeheading">Water Tank</h1>
