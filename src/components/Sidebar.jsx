@@ -5,7 +5,7 @@ import { setLocation } from "../redux/locationSlice";
 const Sidebar = () => {
   const dispatch = useDispatch();
   const [selectedLocation, setSelectedLocation] = useState("All");
-  const locations = [ "All", "IIITH", "RN", "Location 4", "Location 5"];
+  const locations = ["All", "IIITH", "RN", "Location 4", "Location 5"];
 
   useEffect(() => {
     dispatch(setLocation("All"));
