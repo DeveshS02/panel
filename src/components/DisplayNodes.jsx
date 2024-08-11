@@ -1,24 +1,19 @@
-
 import React, { useState, useEffect } from "react";
 import DetailedNode from "./DetailedNode";
 import Card from "./NodeCard";
 import { useSelector } from "react-redux";
 
-
 const DisplayNodes = ({ selectedType, selectedActivity }) => {
   const [data, setData] = useState({ tank: {}, borewell: {}, water: {} });
-  const [loc,setLoc]= useState({ tank: [], borewell: [], water: [] });
-  const [longData, setLongData] = useState({ tank:{}, borewell: {}, water: [] });
-  const [loading, setLoading] = useState(true);
-
-  const [selectedNode, setSelectedNode] = useState(null);
   const [loc, setLoc] = useState({ tank: [], borewell: [], water: [] });
   const [longData, setLongData] = useState({
     tank: {},
     borewell: {},
     water: [],
   });
-  
+  const [loading, setLoading] = useState(true);
+  const location = useSelector((state) => state.location);
+  const [selectedNode, setSelectedNode] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +40,7 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
 
         setData(newData);
         setLoading(false);
-        
+
         const tankLoc = await fetch(
           "https://api-gateway-green.vercel.app/water/staticnodesC"
         );
@@ -78,7 +73,6 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-
       try {
         const tankResponse = await fetch(
           "https://api-gateway-green.vercel.app/water/tankdata"
@@ -132,11 +126,9 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
 
     fetchData();
   }, []);
-       
 
   const createLocationMap = (locData) => {
     const locationMap = {};
-
 
     ["tank", "borewell", "water"].forEach((type) => {
       locData[type].forEach((node) => {
@@ -204,17 +196,13 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
         return null;
       }
     );
-  
   };
-  
-  
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   if (selectedNode) {
-
     return (
       <DetailedNode
         node={selectedNode}
@@ -222,7 +210,6 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
         data={longData}
       />
     );
-
   }
 
   return (
@@ -245,7 +232,6 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
           {filterCards(data.water, "water")}
         </>
       )}
-
     </div>
   );
 };
