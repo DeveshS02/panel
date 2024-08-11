@@ -10,14 +10,10 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
   const [loc,setLoc]= useState({ tank: [], borewell: [], water: [] });
   const [longData, setLongData] = useState({ tank:{}, borewell: {}, water: [] });
   const [loading, setLoading] = useState(true);
+  const location = useSelector((state) => state.location);
 
   const [selectedNode, setSelectedNode] = useState(null);
-  const [loc, setLoc] = useState({ tank: [], borewell: [], water: [] });
-  const [longData, setLongData] = useState({
-    tank: {},
-    borewell: {},
-    water: [],
-  });
+  
   
 
   useEffect(() => {
