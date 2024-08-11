@@ -26,12 +26,14 @@ const Sidebar = () => {
             alt="Logo"
           />
         </a>
+
       </div>
       <hr className="sidebarline" />
       <div className="location w-full h-[90%] mt-3 flex flex-col m-auto">
         {locations.map((item, index) => (
           <button
             key={index}
+
             onClick={() => handleLocationClick(item)}
             className={`text-white menuitem py-2 px-4 mx-auto my-3 rounded w-[62%] ${
               selectedLocation === item ? "selectedbtn" : ""

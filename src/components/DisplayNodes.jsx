@@ -1,11 +1,16 @@
+
 import React, { useState, useEffect } from "react";
 import DetailedNode from "./DetailedNode";
 import Card from "./NodeCard";
 import { useSelector } from "react-redux";
 
+
 const DisplayNodes = ({ selectedType, selectedActivity }) => {
   const [data, setData] = useState({ tank: {}, borewell: {}, water: {} });
+  const [loc,setLoc]= useState({ tank: [], borewell: [], water: [] });
+  const [longData, setLongData] = useState({ tank:{}, borewell: {}, water: [] });
   const [loading, setLoading] = useState(true);
+
   const [selectedNode, setSelectedNode] = useState(null);
   const [loc, setLoc] = useState({ tank: [], borewell: [], water: [] });
   const [longData, setLongData] = useState({
@@ -13,50 +18,7 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
     borewell: {},
     water: [],
   });
-  const location = useSelector((state) => state.location);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const tankResponse = await fetch(
-  //         "https://api-gateway-green.vercel.app/water/tankerdata"
-  //       );
-  //       const borewellResponse = await fetch(
-  //         "https://api-gateway-green.vercel.app/water/borewelldata"
-  //       );
-  //       const waterResponse = await fetch(
-  //         "https://api-gateway-green.vercel.app/water/waterminutesdatas"
-  //       );
-
-  //       const tankData = await tankResponse.json();
-  //       const borewellData = await borewellResponse.json();
-  //       const waterData = await waterResponse.json();
-
-  //       const newData = {
-  //         tank:
-  //           typeof tankData === "object" && !Array.isArray(tankData)
-  //             ? tankData
-  //             : {},
-  //         borewell:
-  //           typeof borewellData === "object" && !Array.isArray(borewellData)
-  //             ? borewellData
-  //             : {},
-  //         water:
-  //           typeof waterData === "object" && !Array.isArray(waterData)
-  //             ? waterData
-  //             : {},
-  //       };
-
-  //       setData(newData);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +45,7 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
 
         setData(newData);
         setLoading(false);
-
+        
         const tankLoc = await fetch(
           "https://api-gateway-green.vercel.app/water/staticnodesC"
         );
@@ -116,6 +78,7 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+
       try {
         const tankResponse = await fetch(
           "https://api-gateway-green.vercel.app/water/tankdata"
@@ -169,9 +132,11 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
 
     fetchData();
   }, []);
+       
 
   const createLocationMap = (locData) => {
     const locationMap = {};
+
 
     ["tank", "borewell", "water"].forEach((type) => {
       locData[type].forEach((node) => {
@@ -239,13 +204,17 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
         return null;
       }
     );
+  
   };
+  
+  
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   if (selectedNode) {
+
     return (
       <DetailedNode
         node={selectedNode}
@@ -253,6 +222,7 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
         data={longData}
       />
     );
+
   }
 
   return (
@@ -275,6 +245,7 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
           {filterCards(data.water, "water")}
         </>
       )}
+
     </div>
   );
 };
