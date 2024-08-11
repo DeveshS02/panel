@@ -187,7 +187,7 @@ hr{
     border-radius: 13px;
     grid: 0 0 48%;
     margin-bottom: 0.5rem;
-    justify-self    : center;
+    justify-self: center;
   }
   
   .attribute-key {
