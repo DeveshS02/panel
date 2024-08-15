@@ -101,7 +101,7 @@ const Card = ({
       >
         <div className="itemheading w-full ">
           {/* <div className="max-w-[90%]"> */}
-            <h3 className="text-xl text-center itemname">{itemName}</h3>
+          <h3 className="text-xl text-center itemname">{itemName}</h3>
           {/* </div> */}
         </div>
         <ul className="flex flex-col gap-2">
@@ -113,7 +113,11 @@ const Card = ({
                 key !== "tanker" &&
                 key !== "borewell" &&
                 key !== "node" &&
-                key !== "pressurevoltage" && (
+                key !== "pressurevoltage" &&
+                key !== "temp" &&
+                key !== "curr_volume" &&
+                key !== "flowrate" &&
+                key !== "pressure" && (
                   <li key={key}>
                     {key}: {value}
                   </li>
