@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* css for body */
 .bg-main{
     background-color: rgb(240, 242, 245);  
 }
 
+/* css for sidebar */
 .bg-sidebar{
     background-color: #eef0f36a;
     backdrop-filter: blur(1px);
@@ -17,9 +19,6 @@
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.87));
 }
 .sidebarline{
-  /* border: none;
-  border-top: 0.7px solid #FF5733; 
-  margin-top: 20px; */
   flex-shrink: 0;
   border-width: 0;
   border-style: solid;
@@ -55,40 +54,91 @@ hr{
 }
 .menuitem{
   font-weight: 300;
-    font-size: 1.2rem;
+  font-size: 1.15rem;
 }
-.menuitem:hover {
+.menuitem:hover:not(.selectedbtn) {
   background: rgba(255, 255, 255, 0.2);
 }
+
+.selectedbtn {
+  background: linear-gradient(195deg, #49a3f1, #1A73E8);
+  letter-spacing: 0.02857em;
+  font-size: 1.1rem;
+  font-weight: 350;
+}
+
+/* css for displaynode */
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 2rem;
   }
-  
-  .card {
-    /* border: 1px solid #ccc; */
-    padding: 1rem;
+  .typeheading{
+    font-size: 1.5rem;
+    grid-column: span 3 / span 3;
+    margin-top: 0.25rem;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    color: rgb(52, 71, 103);
+    }
+/* css for nodecard */
+.card {
+    /* padding: 1rem; */
+    padding-bottom: 1rem;
     border-radius: 8px;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
     text-align: center;
     background-color: rgb(255, 255, 255);
     background-clip: border-box;
     box-shadow: rgba(0, 0, 0, 0.1) 0rem 0.25rem 0.375rem -0.0625rem, rgba(0, 0, 0, 0.06) 0rem 0.125rem 0.25rem -0.0625rem;
     height: 100%;
+    width: 95%;
   }
-
+  /* .inactivecard{
+    background-image: linear-gradient(to left, rgba(214, 72, 72, 0.424)  0%, rgba(234, 19, 19, 0.667) 100%) !important;
+  }
+  .activecard{
+    background-image: linear-gradient(to left, rgba(72, 214, 169, 0.424) 0%, rgba(2, 150, 103, 0.667) 100%) !important;
+  } */
+.inactivecard .itemheading{
+  background: linear-gradient(195deg, rgb(236, 64, 84), #d81b3a);
+  color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.activecard .itemheading{
+  background:linear-gradient(195deg, rgb(102, 187, 106), #43a047);
+  color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.itemname{
+  text-wrap: pretty;
+  /* overflow: scroll; */
+  /* text-overflow: clip;
+  white-space: nowrap;
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
+  color: white;  */
+}
+/* .itemname::-webkit-scrollbar {
+    display: none;
+  
+} */
+.lastupdate{
+  font-size: 0.92rem;
+}
+  /* css for nodedetails */
 .detailed-node-container {
     border: 1px solid #ccc;
     padding-top: 1rem;
     height: 100%;
-    /* border-radius: 8px; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     color: #000;
     position: relative;
-    /* display: grid;
-    justify-content: center; */
   }
   
   .detailed-node-header {
@@ -125,7 +175,6 @@ hr{
   }
   
   .detailed-node-attributes {
-    /* width: 70%; */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -138,7 +187,7 @@ hr{
     border-radius: 13px;
     grid: 0 0 48%;
     margin-bottom: 0.5rem;
-    justify-self    : center;
+    justify-self: center;
   }
   
   .attribute-key {
@@ -228,12 +277,12 @@ hr{
   .nodes::-webkit-scrollbar {
     display: none;
   }
-  
-  /* For IE, Edge, and Firefox */
   .nodes {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;     /* Firefox */
   }
+
+  /* css for navbar */
   .navbar{
     box-shadow: rgba(255, 255, 255, 0.9) 0rem 0rem 0.0625rem 0.0625rem inset, rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem;
     backdrop-filter: saturate(200%) blur(1.875rem);
@@ -242,22 +291,4 @@ hr{
     padding-left: 1.5rem;
     border-radius: 0.75rem;
   }
-  .inactivecard{
-    background-color: #d0a1a1;
-  }
-  .activecard{
-    background-color: #a1d0aa;
-  }
-  .typeheading{
-  font-size: 1.5rem;
-  grid-column: span 3 / span 3;
-  margin-top: 0.25rem;
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  color: rgb(52, 71, 103);
-  }
-  .selectedbtn{
-    background: linear-gradient(195deg, #49a3f1, #1A73E8);
-    letter-spacing: 0.02857em;
-    font-size: 1rem;
-    font-weight: 700;
-  }
+ 

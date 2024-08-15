@@ -1,66 +1,3 @@
-// // DetailedNode.jsx
-// import React from "react";
-
-// const DetailedNode = ({ node, goBack }) => {
-//   const { itemName, itemAttributes, type } = node;
-//   const createdAt = itemAttributes.created_at;
-//   const nodeID = itemAttributes.nodeID;
-
-//   return (
-//     <div className="detailed-node-container">
-//       <div className="detailed-node-header">
-//         <h1 className="item-name">{itemName}</h1>
-//         <button className="close-button" onClick={goBack}>
-//           ✖
-//         </button>
-//       </div>
-//       <div className="detailed-node-info">
-//         <p className="node-type">Type: {type}</p>
-//         <p className="node-id">Node ID: {nodeID}</p>
-//       </div>
-//       {/* <div className="boxi flex w-[100%] justify-center"> */}
-//       <div className="detailed-node-attributes">
-//         {itemAttributes &&
-//           Object.entries(itemAttributes).map(
-//             ([key, value]) =>
-//               key !== "created_at" &&
-//               key !== "nodeID" && (
-//                 <div key={key} className="attribute">
-//                   <span className="attribute-key">{key}</span>:
-//                   <span className="attribute-value">{value}</span>
-//                 </div>
-//               )
-//           )}
-//       </div>
-//       {/* </div> */}
-//       <div className="toggle-container">
-//         <span>Day</span>
-//         <label className="toggle-switch mx-2">
-//           <input type="checkbox" />
-//           <span className="slider"></span>
-//         </label>
-//         <span>Hour</span>
-//       </div>
-//       <div className="performance-container">
-//         <div className="flex justify-center">
-//           <img
-//             className=""
-//             src="/Images/performance_scale1.jpg"
-//             alt="Detailed chart"
-//           />
-//         </div>
-//         <h2>Performance</h2>
-//       </div>
-//       <div className="last-updated">
-//         <p>Last updated on</p>
-//         <p>{createdAt}</p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default DetailedNode;
-
 import React from "react";
 
 const DetailedNode = ({ node, goBack, data }) => {
@@ -99,7 +36,11 @@ const DetailedNode = ({ node, goBack, data }) => {
           Object.entries(itemAttributes).map(
             ([key, value]) =>
               key !== "created_at" &&
-              key !== "nodeID" && (
+              key !== "nodeID" &&
+              key !== "tanker" &&
+              key !== "borewell" &&
+              key !== "node" &&
+              key !== "pressurevoltage" && (
                 <div key={key} className="attribute">
                   <span className="attribute-key">{key}</span>:
                   <span className="attribute-value">{value}</span>
@@ -108,14 +49,14 @@ const DetailedNode = ({ node, goBack, data }) => {
           )}
       </div>
       {/* </div> */}
-      <div className="toggle-container">
+      {/* <div className="toggle-container">
         <span>Day</span>
         <label className="toggle-switch mx-2">
           <input type="checkbox" />
           <span className="slider"></span>
         </label>
         <span>Hour</span>
-      </div>
+      </div> */}
       <div className="performance-container">
         <div className="flex justify-center">
           <div

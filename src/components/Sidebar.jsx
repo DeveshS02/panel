@@ -5,7 +5,7 @@ import { setLocation } from "../redux/locationSlice";
 const Sidebar = () => {
   const dispatch = useDispatch();
   const [selectedLocation, setSelectedLocation] = useState("All");
-  const locations = ["IIITH", "RN", "Location 4", "Location 5", "All"];
+  const locations = ["All", "IIITH", "RN", "Location 4", "Location 5"];
 
   useEffect(() => {
     dispatch(setLocation("All"));
@@ -29,7 +29,7 @@ const Sidebar = () => {
 
       </div>
       <hr className="sidebarline" />
-      <div className="location w-full h-[90%] mt-3 flex flex-col m-auto text-xl ">
+      <div className="location w-full h-[90%] mt-3 flex flex-col m-auto">
         {locations.map((item, index) => (
           <button
             key={index}
