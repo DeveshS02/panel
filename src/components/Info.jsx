@@ -6,6 +6,7 @@ import Stats from "./Stats";
 const Info = () => {
   const [selectedType, setSelectedType] = useState("All");
   const [selectedActivity, setSelectedActivity] = useState("All");
+  const [loading, setLoading] = useState(true);
 
   return (
     <div className="flex flex-col">
@@ -20,11 +21,12 @@ const Info = () => {
       <div>
         <div className="nodes mt-5 h-[80vh] overflow-scroll overflow-x-hidden pb-1">
           <div className="ml-4">
-            <Stats />
+          {!loading && <Stats />}
           </div>
           <DisplayNodes
             selectedType={selectedType}
             selectedActivity={selectedActivity}
+            setLoader={setLoading}
           />
         </div>
       </div>

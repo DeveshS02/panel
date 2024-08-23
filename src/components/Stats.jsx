@@ -1,8 +1,13 @@
 import React from "react";
+import { useSelector } from 'react-redux';
 
 const Stats = () => {
+
+  const activeCount = useSelector((state) => state.counter.activeCount);
+  const inactiveCount = useSelector((state) => state.counter.inactiveCount);
+
   return (
-    <div className="flex gap-6 pt-4 ">
+    <div className="flex flex-col md:flex-row md:flex-wrap gap-6 pt-4 border-2 border-red-700 mr-2">
       <div className="statbox w-[23%]">
         <div className="statbox1">
           <div className="box1image">
@@ -40,7 +45,7 @@ const Stats = () => {
           </div>
           <div className="box1text text-right">
             <span className="box1text1">Active Devices</span>
-            <h4 className="box1text2">15</h4>
+            <h4 className="box1text2">{activeCount}</h4>
           </div>
         </div>
         <hr className="statbox2" />
@@ -87,7 +92,7 @@ const Stats = () => {
           </div>
           <div className="box1text text-right">
             <span className="box1text1">Inactive Devices</span>
-            <h4 className="box1text2">12</h4>
+            <h4 className="box1text2">{inactiveCount}</h4>
           </div>
         </div>
         <hr className="statbox2" />

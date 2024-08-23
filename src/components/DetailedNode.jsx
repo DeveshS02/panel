@@ -30,7 +30,7 @@ const DetailedNode = ({ node, goBack, data }) => {
         <p className="node-type">Type: {type}</p>
         <p className="node-id">Node ID: {nodeID}</p>
       </div>
-      {/* <div className="boxi flex w-[100%] justify-center"> */}
+  
       <div className="detailed-node-attributes">
         {itemAttributes &&
           Object.entries(itemAttributes).map(
@@ -48,15 +48,6 @@ const DetailedNode = ({ node, goBack, data }) => {
               )
           )}
       </div>
-      {/* </div> */}
-      {/* <div className="toggle-container">
-        <span>Day</span>
-        <label className="toggle-switch mx-2">
-          <input type="checkbox" />
-          <span className="slider"></span>
-        </label>
-        <span>Hour</span>
-      </div> */}
       <div className="performance-container">
         <div className="flex justify-center">
           <div

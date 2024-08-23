@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import DetailedNode from "./DetailedNode";
 import Card from "./NodeCard";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setActiveCount, setInactiveCount } from '../redux/counterSlice';
 
-const DisplayNodes = ({ selectedType, selectedActivity }) => {
+const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
   const [data, setData] = useState({ tank: {}, borewell: {}, water: {} });
-
-  const [loc,setLoc]= useState({ tank: [], borewell: [], water: [] });
-  const [longData, setLongData] = useState({ tank:{}, borewell: {}, water: [] });
+  const [loc, setLoc] = useState({ tank: [], borewell: [], water: [] });
+  const [longData, setLongData] = useState({ tank: {}, borewell: {}, water: {} });
   const [loading, setLoading] = useState(true);
   const location = useSelector((state) => state.location);
 
   const [selectedNode, setSelectedNode] = useState(null);
+
+  const dispatch = useDispatch(); // Move useDispatch outside the countActivity function
 
   useEffect(() => {
     const fetchData = async () => {
@@ -169,14 +171,12 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
         const differenceInMilliseconds = now.getTime() - lastItemDate.getTime();
         const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
 
-        let isactive = 0;
-        if (differenceInHours <= 1) {
-          isactive = 1;
-        }
+        let isActive = differenceInHours <= 1 ? 1 : 0;
+
         const shouldDisplay =
           selectedActivity === "All" ||
-          (isactive && selectedActivity === "Active") ||
-          (!isactive && selectedActivity === "Inactive");
+          (isActive && selectedActivity === "Active") ||
+          (!isActive && selectedActivity === "Inactive");
 
         if (shouldDisplay) {
           return (
@@ -186,7 +186,7 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
               itemAttributes={itemAttributes}
               type={type}
               setSelectedNode={setSelectedNode}
-              activityy={isactive}
+              activityy={isActive}
             />
           );
         }
@@ -194,6 +194,27 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
         return null;
       }
     );
+  };
+
+  let activeCounter = 0;
+  let inactiveCounter = 0;
+
+  // Move counting logic directly here
+  const countActivity = (dataObject) => {
+    Object.entries(dataObject).forEach(([itemName, itemAttributes]) => {
+      const createdAt = itemAttributes.created_at;
+      const [datePart, timePart] = createdAt.split(" ");
+      const [day, month, year] = datePart.split("-");
+      const formattedDate = `${year}-${month}-${day}T${timePart}`;
+
+      const lastItemDate = new Date(formattedDate);
+      const now = new Date();
+      const differenceInMilliseconds = now.getTime() - lastItemDate.getTime();
+      const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
+
+      if (differenceInHours >= 1) inactiveCounter++;
+      else activeCounter++;
+    });
   };
 
   if (loading) {
@@ -210,28 +231,41 @@ const DisplayNodes = ({ selectedType, selectedActivity }) => {
     );
   }
 
-  return (
-    <div className="grid px-4 mt-2">
-      {(selectedType === "All" || selectedType === "Water Tank") && (
-        <>
-          <h1 className="typeheading">Water Tank</h1>
-          {filterCards(data.tank, "tank")}
-        </>
-      )}
-      {(selectedType === "All" || selectedType === "Borewell") && (
-        <>
-          <h1 className="typeheading">Borewell</h1>
-          {filterCards(data.borewell, "borewell")}
-        </>
-      )}
-      {(selectedType === "All" || selectedType === "Water Meter") && (
-        <>
-          <h1 className="typeheading">Water Meter</h1>
-          {filterCards(data.water, "water")}
-        </>
-      )}
-    </div>
-  );
+  if (!loading) {
+
+    countActivity(data.borewell);
+    countActivity(data.water);
+    countActivity(data.tank);
+
+    dispatch(setActiveCount(activeCounter));
+    dispatch(setInactiveCount(inactiveCounter));
+
+    setLoader(false);
+
+    return (
+      <div className="cards px-4 mt-4 w-[100%]">
+        {(selectedType === "All" || selectedType === "Water Tank") && (
+          <>
+            <h1 className="typeheading">Water Tank</h1>
+            <div className="grid mt-2">{filterCards(data.tank, "tank")}</div>
+            
+          </>
+        )}
+        {(selectedType === "All" || selectedType === "Borewell") && (
+          <>
+            <h1 className="typeheading">Borewell</h1>
+            <div className="grid mt-2">{filterCards(data.borewell, "borewell")}</div>
+          </>
+        )}
+        {(selectedType === "All" || selectedType === "Water Meter") && (
+          <>
+            <h1 className="typeheading">Water Meter</h1>
+            <div className="grid mt-2">{filterCards(data.water, "water")}</div>
+          </>
+        )}
+      </div>
+    );
+  }
 };
 
 export default DisplayNodes;
