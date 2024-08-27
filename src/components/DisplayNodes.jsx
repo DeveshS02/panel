@@ -90,27 +90,36 @@ const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
         const waterData = await waterResponse.json();
 
         const processData = (data) => {
-          const currentDay = new Date();
-          currentDay.setHours(0, 0, 0, 0); // Set to the start of the current day
-
+          const startTime = new Date(); // Start time will be set to midnight of the previous day
+          startTime.setHours(0, 0, 0, 0);
+          startTime.setDate(startTime.getDate()); // Set to midnight of the previous day
+        
           const activityByNode = {};
-
+        
           for (const node in data) {
-            const activityByHour = Array(24).fill(false); // Initialize array to track activity for this node
-
+            // Initialize array for 48 half-hour periods
+            const activityByPeriod = Array(48).fill(false);
+        
             data[node].forEach((entry) => {
               const entryDate = new Date(entry.created_at);
-              if (entryDate >= currentDay) {
-                const hour = entryDate.getHours();
-                activityByHour[hour] = true;
+              if (entryDate >= startTime) {
+                // Calculate the difference in minutes from the start time
+                const timeDifferenceInMinutes = (entryDate - startTime) / (1000 * 60);
+                
+                // Calculate the 30-minute period index (ranges from 0 to 47)
+                const periodIndex = Math.floor(timeDifferenceInMinutes / 30);
+                if (periodIndex >= 0 && periodIndex < 48) {
+                  activityByPeriod[periodIndex] = true;
+                }
               }
             });
-
-            activityByNode[node] = activityByHour;
+        
+            activityByNode[node] = activityByPeriod;
           }
-
+        
           return activityByNode;
         };
+        
 
         const newData = {
           tank: processData(tankData),
@@ -119,7 +128,7 @@ const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
         };
 
         setLongData(newData);
-        // console.log(newData);
+        console.log(newData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

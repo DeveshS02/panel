@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 
 const DetailedNode = ({ node, goBack, data }) => {
   const { itemName, itemAttributes, type } = node;
   const createdAt = itemAttributes.created_at;
-  const nodeID = itemAttributes.nodeID;
-  const currentHour = new Date().getHours();
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinutes = now.getMinutes();
+  const currentPeriodIndex = currentHour * 2 + Math.floor(currentMinutes / 30);
 
-  const Tile = ({ active, neutral }) => {
+  // Tile Component with Hover Tooltip
+  const Tile = ({ active, neutral, index }) => {
+    const [hovered, setHovered] = useState(false);
+
+    // Calculate the start time of the period
+    const hours = Math.floor(index / 2);
+    const minutes = (index % 2) * 30;
+
+    // Format the time as HH:MM
+    const startTime = `${String(hours).padStart(2, "0")}:${String(
+      minutes
+    ).padStart(2, "0")}`;
+
+    const handleMouseEnter = () => setHovered(true);
+    const handleMouseLeave = () => setHovered(false);
+
     const tileStyle = {
       width: "20px",
       height: "20px",
@@ -16,12 +33,42 @@ const DetailedNode = ({ node, goBack, data }) => {
         : active
         ? "linear-gradient(195deg, rgb(102, 187, 106), rgb(67, 160, 71))"
         : "linear-gradient(195deg, rgb(236, 64, 84), #d81b3a)",
+      position: "relative",
     };
-    return <div style={tileStyle}></div>;
+
+    return (
+      <div
+        style={tileStyle}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Tooltip */}
+        {hovered && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "100%", // Position above the tile
+              left: "50%",
+              transform: "translateX(-50%)",
+              backgroundColor: "rgba(0, 0, 0, 0.75)",
+              color: "#fff",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              fontSize: "12px",
+              whiteSpace: "nowrap",
+              pointerEvents: "none", // Prevent blocking interaction
+              zIndex: 20,
+            }}
+          >
+            Start Time: {startTime}
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
-    <div className="absolute z-20 flex justify-center">
+    <div className="absolute z-20 flex justify-center align-middle">
       <div className="detailedbox">
         <div className="detailedheading">
           <div className="detailedname">
@@ -60,15 +107,16 @@ const DetailedNode = ({ node, goBack, data }) => {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(6, 1fr)",
+                  gridTemplateColumns: "repeat(8, 1fr)", // 8 columns for 48 periods
                   gap: "4px",
                 }}
               >
-                {data[type][itemName].map((active, index) => (
+                {data[type][itemName]?.map((active, index) => (
                   <Tile
                     key={index}
+                    index={index} // Pass the index to calculate the start time
                     active={active}
-                    neutral={index > currentHour}
+                    neutral={index > currentPeriodIndex} // Updated neutral condition
                   />
                 ))}
               </div>
@@ -90,17 +138,45 @@ const DetailedNode = ({ node, goBack, data }) => {
             <div>
               <div className="detailed-node-attributes">
                 {itemAttributes &&
-                  Object.entries(itemAttributes).map(
-                    ([key, value]) =>
+                  Object.entries(itemAttributes).map(([key, value]) => {
+                    if (
                       key !== "created_at" &&
                       key !== "nodeID" &&
                       key !== "tanker" &&
                       key !== "borewell" &&
                       key !== "node" &&
-                      key !== "pressurevoltage" && (
+                      key !== "pressurevoltage"
+                    ) {
+                      // Key mappings for labels
+                      const keyLabelMapping = {
+                        water_level: "Water Level",
+                        totalflow: "Total Flow",
+                        temp: "Temperature",
+                        curr_volume: "Volume",
+                        flowrate: "Flow Rate",
+                        pressure: "Pressure",
+                      };
+
+                      // Units mapping
+                      const unitMapping = {
+                        water_level: "cm",
+                        totalflow: "Litres",
+                        temp: "°C",
+                        curr_volume: "kL",
+                        flowrate: "kL/hr",
+                        pressure: "cbar",
+                      };
+
+                      const displayKey = keyLabelMapping[key] || key;
+                      const unitLabel = unitMapping[key] || "";
+                      const displayValue = unitMapping[key]
+                        ? `${value} ${unitMapping[key]}`
+                        : value;
+
+                      return (
                         <div key={key} className="attribute">
                           <div className="flex flex-col items-center">
-                            <span className="attribute-key">{key}</span>
+                            <span className="attribute-key">{displayKey}</span>
                             <span
                               style={{
                                 fontWeight: "400",
@@ -108,20 +184,20 @@ const DetailedNode = ({ node, goBack, data }) => {
                                 letterSpacing: "0.5px",
                               }}
                             >
-                              in L
+                              in {unitLabel}
                             </span>
                           </div>
 
-                          <span className="attribute-value">{value}</span>
+                          <span className="attribute-value">
+                            {displayValue}
+                          </span>
                         </div>
-                      )
-                  )}
+                      );
+                    }
+                    return null;
+                  })}
               </div>
             </div>
-            {/* <div className="last-updated">
-              <p>Last updated on</p>
-              <p>{createdAt}</p>
-            </div> */}
             <div className="flex items-center gap-2 ">
               <svg
                 width="17px"
