@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import DetailedNode from "./DetailedNode";
 import Card from "./NodeCard";
 import { useSelector, useDispatch } from "react-redux";
-import { setActiveCount, setInactiveCount } from '../redux/counterSlice';
+import { setActiveCount, setInactiveCount } from "../redux/counterSlice";
 
 const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
   const [data, setData] = useState({ tank: {}, borewell: {}, water: {} });
   const [loc, setLoc] = useState({ tank: [], borewell: [], water: [] });
-  const [longData, setLongData] = useState({ tank: {}, borewell: {}, water: {} });
+  const [longData, setLongData] = useState({
+    tank: {},
+    borewell: {},
+    water: {},
+  });
   const [loading, setLoading] = useState(true);
   const location = useSelector((state) => state.location);
-
   const [selectedNode, setSelectedNode] = useState(null);
-
-  const dispatch = useDispatch(); // Move useDispatch outside the countActivity function
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -199,7 +200,6 @@ const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
   let activeCounter = 0;
   let inactiveCounter = 0;
 
-  // Move counting logic directly here
   const countActivity = (dataObject) => {
     Object.entries(dataObject).forEach(([itemName, itemAttributes]) => {
       const createdAt = itemAttributes.created_at;
@@ -221,18 +221,7 @@ const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
     return <div>Loading...</div>;
   }
 
-  if (selectedNode) {
-    return (
-      <DetailedNode
-        node={selectedNode}
-        goBack={() => setSelectedNode(null)}
-        data={longData}
-      />
-    );
-  }
-
   if (!loading) {
-
     countActivity(data.borewell);
     countActivity(data.water);
     countActivity(data.tank);
@@ -241,20 +230,26 @@ const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
     dispatch(setInactiveCount(inactiveCounter));
 
     setLoader(false);
+  }
 
-    return (
-      <div className="cards px-4 mt-4 w-[100%]">
+  return (
+    <div className="w-[100%] flex justify-center">
+      {/* Blurred DisplayNodes component */}
+      <div
+        className={`cards px-4 mt-4 w-[100%] ${selectedNode ? "blur-sm" : ""}`}
+      >
         {(selectedType === "All" || selectedType === "Water Tank") && (
           <>
             <h1 className="typeheading">Water Tank</h1>
             <div className="grid mt-2">{filterCards(data.tank, "tank")}</div>
-            
           </>
         )}
         {(selectedType === "All" || selectedType === "Borewell") && (
           <>
             <h1 className="typeheading">Borewell</h1>
-            <div className="grid mt-2">{filterCards(data.borewell, "borewell")}</div>
+            <div className="grid mt-2">
+              {filterCards(data.borewell, "borewell")}
+            </div>
           </>
         )}
         {(selectedType === "All" || selectedType === "Water Meter") && (
@@ -264,8 +259,17 @@ const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
           </>
         )}
       </div>
-    );
-  }
+
+      {/* Overlay DetailedNode component */}
+      {selectedNode && (
+        <DetailedNode
+          node={selectedNode}
+          goBack={() => setSelectedNode(null)}
+          data={longData}
+        />
+      )}
+    </div>
+  );
 };
 
 export default DisplayNodes;
