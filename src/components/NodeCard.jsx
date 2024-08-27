@@ -23,25 +23,48 @@ const Card = ({
           <h3 className="text-xl text-center itemname">{itemName}</h3>
         </div>
         <ul className="flex flex-col gap-2">
-          {itemAttributes &&
-            Object.entries(itemAttributes).map(
-              ([key, value]) =>
-                key !== "created_at" &&
-                key !== "nodeID" &&
-                key !== "tanker" &&
-                key !== "borewell" &&
-                key !== "node" &&
-                key !== "pressurevoltage" &&
-                key !== "temp" &&
-                key !== "curr_volume" &&
-                key !== "flowrate" &&
-                key !== "pressure" && (
-                  <li key={key}>
-                    {key}: {value}
-                  </li>
-                )
-            )}
-        </ul>
+  {itemAttributes &&
+    Object.entries(itemAttributes).map(([key, value]) => {
+      if (
+        key !== "created_at" &&
+        key !== "nodeID" &&
+        key !== "tanker" &&
+        key !== "borewell" &&
+        key !== "node" &&
+        key !== "pressurevoltage" &&
+        key !== "temp" &&
+        key !== "curr_volume" &&
+        key !== "flowrate" &&
+        key !== "pressure"
+      ) {
+        // Key mappings for labels
+        const keyLabelMapping = {
+          water_level: "Water Level",
+          totalflow: "Total Flow",
+        };
+
+        // Units mapping
+        const unitMapping = {
+          water_level: "cm",
+          totalflow: "Litres",
+        };
+
+        // Get the label for the key
+        const displayKey = keyLabelMapping[key] || key;
+
+        // Add unit to value if it matches a key in unitMapping
+        const displayValue = unitMapping[key] ? `${value} ${unitMapping[key]}` : value;
+
+        return (
+          <li key={key}>
+            {displayKey}: {displayValue}
+          </li>
+        );
+      }
+      return null;
+    })}
+</ul>
+
         <div className="flex items-center gap-2 justify-center">
           <svg
             width="17px"
