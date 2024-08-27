@@ -1,5 +1,6 @@
-import React from "react";
+import {React, useState} from "react";
 import Dropdown from "./Dropdown";
+import ProfileCard from "./ProfileCard";
 
 const Control = ({
   selectedType,
@@ -9,9 +10,17 @@ const Control = ({
 }) => {
   const activity = ["All", "Active", "Inactive"];
   const types = ["All", "Borewell", "Water Meter", "Water Tank"];
+  const [showContainer, setShowContainer] = useState(false);
+
+  const handleButtonClick = () => {
+    setShowContainer(true);
+  };
+  const handleCloseButtonClick = () => {
+    setShowContainer(false);
+  };
 
   return (
-    <div className="flex navbar justify-between h-full w-[98%] items-center">
+    <div className="flex navbar justify-between h-full w-[98%] items-center z-20">
       <div className="flex w-[30%] justify-between">
         <Dropdown
           label="Activity"
@@ -54,8 +63,8 @@ const Control = ({
               </g>
             </svg>
           </div>
-        </button>
-        <button>
+        </button >
+        <button onClick={handleButtonClick}>
           <div>
             <svg
               width="25px"
@@ -82,6 +91,11 @@ const Control = ({
           </div>
         </button>
       </div>
+      {showContainer && (
+        <ProfileCard
+          onClose={handleCloseButtonClick}
+        />
+      )}
     </div>
   );
 };
