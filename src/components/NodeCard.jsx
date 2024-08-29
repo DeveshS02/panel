@@ -35,7 +35,8 @@ const Card = ({
         key !== "temp" &&
         key !== "curr_volume" &&
         key !== "flowrate" &&
-        key !== "pressure"
+        key !== "pressure" &&
+        key !== 'Last_Updated'
       ) {
         // Key mappings for labels
         const keyLabelMapping = {

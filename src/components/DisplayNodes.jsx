@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import DetailedNode from "./DetailedNode";
 import Card from "./NodeCard";
+import { parse, isBefore, format } from 'date-fns';
 import { useSelector, useDispatch } from "react-redux";
 import { setActiveCount, setInactiveCount } from "../redux/counterSlice";
 
 const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
   const [data, setData] = useState({ tank: {}, borewell: {}, water: {} });
   const [loc, setLoc] = useState({ tank: [], borewell: [], water: [] });
-  const [longData, setLongData] = useState({
-    tank: {},
-    borewell: {},
-    water: {},
-  });
+  const [longData, setLongData] = useState({tank: {}, borewell: {}, water: {}});
+  const [merger, setMerger] = useState(false);
   const [loading, setLoading] = useState(true);
   const location = useSelector((state) => state.location);
   const [selectedNode, setSelectedNode] = useState(null);
@@ -89,6 +87,41 @@ const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
         const borewellData = await borewellResponse.json();
         const waterData = await waterResponse.json();
 
+        const newDate = {
+          tank: tankData,
+          borewell: borewellData,
+          water: waterData,
+        };
+
+        const merger = (data1, data2) => {
+          for (const nodeType in data1) {
+            for (const node in data1[nodeType]) {
+              const latestEntryData1 = data1[nodeType][node][data1[nodeType][node].length - 1];
+              const entryData2 = data2[nodeType][node];
+        
+              // Define the date formats
+              const formatData1 = 'MM/dd/yyyy, HH:mm:ss';
+              const formatData2 = 'dd-MM-yyyy HH:mm:ss';
+              
+              if(latestEntryData1 && entryData2){
+                
+                const latestCreatedAtData1 = parse(latestEntryData1.created_at, formatData1, new Date());
+                const createdAtData2 = parse(entryData2.created_at, formatData2, new Date());
+                
+                if (isBefore(latestCreatedAtData1, createdAtData2)) {
+                  entryData2.Last_Updated = format(createdAtData2, formatData1);
+                  data1[nodeType][node].push(entryData2);
+                }
+              }
+              
+            }
+          }
+        
+          return data1;
+        }
+
+        merger(newDate,data);
+        
         const processData = (data) => {
           const startTime = new Date(); // Start time will be set to midnight of the previous day
           startTime.setHours(0, 0, 0, 0);
@@ -119,23 +152,22 @@ const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
         
           return activityByNode;
         };
-        
 
         const newData = {
-          tank: processData(tankData),
-          borewell: processData(borewellData),
-          water: processData(waterData),
+          tank: processData(newDate.tank),
+          borewell: processData(newDate.borewell),
+          water: processData(newDate.water),
         };
 
         setLongData(newData);
-        console.log(newData);
+        setMerger(true)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [data]);
 
   const createLocationMap = (locData) => {
     const locationMap = {};
@@ -270,7 +302,7 @@ const DisplayNodes = ({ selectedType, selectedActivity, setLoader }) => {
       </div>
 
       {/* Overlay DetailedNode component */}
-      {selectedNode && (
+      {selectedNode && merger && (
         <DetailedNode
           node={selectedNode}
           goBack={() => setSelectedNode(null)}

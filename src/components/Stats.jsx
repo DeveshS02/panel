@@ -16,17 +16,17 @@ const Stats = () => {
                 version="1.1"
                 id="Capa_1"
                 xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
                 width="24px"
                 height="24px"
                 viewBox="0 0 53.24 53.24"
-                xml:space="preserve"
+                xmlSpace="preserve"
               >
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                 <g
                   id="SVGRepo_tracerCarrier"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 ></g>
                 <g id="SVGRepo_iconCarrier">
                   {" "}
@@ -63,17 +63,17 @@ const Stats = () => {
                 version="1.1"
                 id="Capa_1"
                 xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
                 width="24px"
                 height="24px"
                 viewBox="0 0 53.24 53.24"
-                xml:space="preserve"
+                xmlSpace="preserve"
               >
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                 <g
                   id="SVGRepo_tracerCarrier"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 ></g>
                 <g id="SVGRepo_iconCarrier">
                   {" "}
@@ -110,17 +110,17 @@ const Stats = () => {
                 version="1.1"
                 id="Capa_1"
                 xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
                 width="24px"
                 height="24px"
                 viewBox="0 0 53.24 53.24"
-                xml:space="preserve"
+                xmlSpace="preserve"
               >
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                 <g
                   id="SVGRepo_tracerCarrier"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 ></g>
                 <g id="SVGRepo_iconCarrier">
                   {" "}
@@ -166,8 +166,8 @@ const Stats = () => {
                 version="1.1"
                 xmlSpace="preserve"
                 xmlns="http://www.w3.org/2000/svg"
-                xmlns:serif="http://www.serif.com/"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlnsserif="http://www.serif.com/"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
                 role="img"
                 aria-label="Bar chart icon"
               >

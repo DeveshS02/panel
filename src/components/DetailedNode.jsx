@@ -67,6 +67,16 @@ const DetailedNode = ({ node, goBack, data }) => {
     );
   };
 
+  // Array to store the start time of each period
+  const periods = Array.from({ length: 48 }, (_, index) => {
+    const hours = Math.floor(index / 2);
+    const minutes = (index % 2) * 30;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0"
+    )}`;
+  });
+
   return (
     <div className="absolute z-20 flex justify-center align-middle">
       <div className="detailedbox">
@@ -91,8 +101,8 @@ const DetailedNode = ({ node, goBack, data }) => {
                 ></g>
                 <g id="SVGRepo_iconCarrier">
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
                     fill="#FFFFFF"
                   ></path>
@@ -103,24 +113,48 @@ const DetailedNode = ({ node, goBack, data }) => {
         </div>
         <div className="flex ml-4 mr-8 pb-6 pt-6 justify-between gap-10">
           <div className="performance-container px-4 items-center justify-center">
-            <div className="flex justify-center">
+            <div className="flex justify-center flex-col">
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(8, 1fr)", // 8 columns for 48 periods
-                  gap: "4px",
+                  gridTemplateColumns: "repeat(9, 1fr)", // 8 columns for 48 periods + 1 column for time
+                  gap: "3px",
                 }}
               >
-                {data[type][itemName]?.map((active, index) => (
-                  <Tile
-                    key={index}
-                    index={index} // Pass the index to calculate the start time
-                    active={active}
-                    neutral={index > currentPeriodIndex} // Updated neutral condition
-                  />
-                ))}
+                {Array.from({ length: 6 }).map((_, rowIndex) => {
+                  const timeIndex = rowIndex * 8; // Calculate the index for the time column
+
+                  return (
+                    <React.Fragment key={rowIndex}>
+                      {/* Time Column */}
+                      <div
+                        style={{
+                          textAlign: "left",
+                          color: "rgb(52, 71, 103)",
+                          paddingRight: "2px", // Add padding to align the time properly
+                          fontSize: "14px"
+                        }}
+                      >
+                        {periods[timeIndex]} {/* Display the start time */}
+                      </div>
+
+                      {/* Grid of Tiles */}
+                      {data[type][itemName]
+                        .slice(timeIndex, timeIndex + 8)
+                        .map((active, index) => (
+                          <Tile
+                            key={timeIndex + index}
+                            index={timeIndex + index} // Pass the index to calculate the start time
+                            active={active}
+                            neutral={timeIndex + index > currentPeriodIndex} // Updated neutral condition
+                          />
+                        ))}
+                    </React.Fragment>
+                  );
+                })}
               </div>
             </div>
+
             <h2
               style={{
                 color: "rgb(52, 71, 103)",
@@ -145,7 +179,8 @@ const DetailedNode = ({ node, goBack, data }) => {
                       key !== "tanker" &&
                       key !== "borewell" &&
                       key !== "node" &&
-                      key !== "pressurevoltage"
+                      key !== "pressurevoltage" &&
+                      key !== "Last_Updated"
                     ) {
                       // Key mappings for labels
                       const keyLabelMapping = {
