@@ -78,7 +78,7 @@ const DetailedNode = ({ node, goBack, data }) => {
   });
 
   return (
-    <div className="absolute z-20 flex justify-center align-middle">
+    <div className="absolute z-20 flex justify-center detailednode mr-1">
       <div className="detailedbox">
         <div className="detailedheading">
           <div className="detailedname">
@@ -111,7 +111,7 @@ const DetailedNode = ({ node, goBack, data }) => {
             </button>
           </div>
         </div>
-        <div className="flex ml-4 mr-8 pb-6 pt-6 justify-between gap-10">
+        <div className="flex ml-3 mr-8 pb-6 pt-6 justify-between gap-1">
           <div className="performance-container px-4 items-center justify-center">
             <div className="flex justify-center flex-col">
               <div
@@ -132,7 +132,7 @@ const DetailedNode = ({ node, goBack, data }) => {
                           textAlign: "left",
                           color: "rgb(52, 71, 103)",
                           paddingRight: "2px", // Add padding to align the time properly
-                          fontSize: "14px"
+                          fontSize: "12px",
                         }}
                       >
                         {periods[timeIndex]} {/* Display the start time */}
@@ -204,9 +204,10 @@ const DetailedNode = ({ node, goBack, data }) => {
 
                       const displayKey = keyLabelMapping[key] || key;
                       const unitLabel = unitMapping[key] || "";
-                      const displayValue = unitMapping[key]
-                        ? `${value} ${unitMapping[key]}`
-                        : value;
+                      const displayValue = value;
+                      // const displayValue = unitMapping[key]
+                      //   ? `${value} ${unitMapping[key]}`
+                      //   : value;
 
                       return (
                         <div key={key} className="attribute">

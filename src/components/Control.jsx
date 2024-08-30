@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import { React, useState } from "react";
 import Dropdown from "./Dropdown";
 import ProfileCard from "./ProfileCard";
 
@@ -63,7 +63,7 @@ const Control = ({
               </g>
             </svg>
           </div>
-        </button >
+        </button>
         <button onClick={handleButtonClick}>
           <div>
             <svg
@@ -91,11 +91,7 @@ const Control = ({
           </div>
         </button>
       </div>
-      {showContainer && (
-        <ProfileCard
-          onClose={handleCloseButtonClick}
-        />
-      )}
+      {showContainer && <ProfileCard onClose={handleCloseButtonClick} />}
     </div>
   );
 };
