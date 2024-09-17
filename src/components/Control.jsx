@@ -36,7 +36,7 @@ const Control = ({
         />
       </div>
       <div className="flex w-[6%] justify-between">
-        <button>
+        <button className="controlbtn1">
           <div>
             <svg
               width="25px"
@@ -45,6 +45,7 @@ const Control = ({
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               stroke="#344767"
+              className="controlsvg1"
             >
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g
@@ -64,7 +65,7 @@ const Control = ({
             </svg>
           </div>
         </button>
-        <button onClick={handleButtonClick}>
+        <button onClick={handleButtonClick} className="controlbtn2">
           <div>
             <svg
               width="25px"
@@ -73,6 +74,7 @@ const Control = ({
               xmlns="http://www.w3.org/2000/svg"
               fill="#344767"
               stroke="#344767"
+              className="controlsvg2"
             >
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g
